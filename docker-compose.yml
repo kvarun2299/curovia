@@ -1,0 +1,16 @@
+services:
+  patient-service:
+    build: ./patient-service
+    ports:
+      - "8080:3000"
+    environment:
+      APPOINTMENTS_API_URL: http://localhost:8081
+    depends_on:
+      - appointment-service
+    restart: unless-stopped
+
+  appointment-service:
+    build: ./appointment-service
+    ports:
+      - "8081:3001"
+    restart: unless-stopped

@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Curovia demo container registries.
+
+Resources:
+  PatientRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: curovia-patient-service
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      ImageTagMutability: MUTABLE
+      LifecyclePolicy:
+        LifecyclePolicyText: '{"rules":[{"rulePriority":1,"description":"Keep the latest 10 images","selection":{"tagStatus":"any","countType":"imageCountMoreThan","countNumber":10},"action":{"type":"expire"}}]}'
+  AppointmentRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: curovia-appointment-service
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      ImageTagMutability: MUTABLE
+      LifecyclePolicy:
+        LifecyclePolicyText: '{"rules":[{"rulePriority":1,"description":"Keep the latest 10 images","selection":{"tagStatus":"any","countType":"imageCountMoreThan","countNumber":10},"action":{"type":"expire"}}]}'
+
+Outputs:
+  PatientRepositoryUri:
+    Value: !GetAtt PatientRepository.RepositoryUri
+  AppointmentRepositoryUri:
+    Value: !GetAtt AppointmentRepository.RepositoryUri
